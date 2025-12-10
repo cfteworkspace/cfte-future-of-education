@@ -105,9 +105,9 @@
         <span class="text-sm font-medium">Restart System</span>
     </button>
 
-    <!-- Centered Background Logo - Fully White -->
+    <!-- Centered Background Logo - Reduced size by half (w-96 -> w-48) -->
     <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0">
-        <img src="https://courses.cfte.education/wp-content/uploads/2024/09/act-cfte-logo-transparent-white-e1737471820731.png" alt="CFTE Logo" class="w-96">
+        <img src="https://courses.cfte.education/wp-content/uploads/2024/09/act-cfte-logo-transparent-white-e1737471820731.png" alt="CFTE Logo" class="w-48">
     </div>
 
     <!-- Desktop Icons Area -->
@@ -188,6 +188,16 @@
                 <i class="ph-duotone ph-flask text-2xl text-blue-500 mb-1 group-hover:text-blue-400"></i>
                 <span class="text-[10px] text-gray-400 group-hover:text-white">Projects</span>
             </button>
+            <!-- Added Video Button -->
+            <button class="flex flex-col items-center justify-center p-2 hover:bg-white/5 rounded transition-colors group" onclick="os.openApp('video')">
+                <i class="ph-duotone ph-play-circle text-2xl text-pink-500 mb-1 group-hover:text-pink-400"></i>
+                <span class="text-[10px] text-gray-400 group-hover:text-white">Video</span>
+            </button>
+            <!-- Added Warning Button -->
+            <button class="flex flex-col items-center justify-center p-2 hover:bg-white/5 rounded transition-colors group" onclick="os.openApp('warning')">
+                <i class="ph-duotone ph-warning text-2xl text-yellow-500 mb-1 group-hover:text-yellow-400"></i>
+                <span class="text-[10px] text-gray-400 group-hover:text-white">Notice</span>
+            </button>
         </div>
         <button class="w-full py-2 flex items-center gap-2 hover:bg-red-900/20 hover:text-red-400 rounded px-2 transition-colors text-sm text-gray-500">
             <i class="ph-bold ph-power"></i> Shut Down
@@ -260,6 +270,101 @@
                 content: `
                     <div class="flex flex-col h-full bg-black">
                         <iframe src="https://courses.cfte.education/ai-literacy-for-professionals-online-course-2/" class="w-full h-full border-0" allowfullscreen></iframe>
+                    </div>
+                `
+            },
+            'video': {
+                id: 'video',
+                title: 'Welcome Video',
+                icon: 'ph-play-circle',
+                color: 'text-pink-500',
+                width: 800,
+                height: 500,
+                content: `
+                    <div class="relative w-full h-full bg-black group overflow-hidden select-none">
+                        <!-- Video Element -->
+                        <video id="vid-player" class="w-full h-full object-contain" ontimeupdate="os.updateVideoProgress()" onended="os.resetVideoState()">
+                            <source src="https://courses.cfte.education/wp-content/uploads/2025/12/welcome-to-cfte-welcome-to-finance-20.mp4" type="video/mp4">
+                        </video>
+                        
+                        <!-- Central Play Overlay -->
+                        <div id="vid-overlay" class="absolute inset-0 flex items-center justify-center bg-black/60 cursor-pointer transition-all duration-300" onclick="os.toggleVideo()">
+                            <div class="relative group/btn">
+                                <div class="absolute inset-0 bg-cfte-pink blur-xl opacity-20 group-hover/btn:opacity-40 transition-opacity"></div>
+                                <div class="w-20 h-20 rounded-full border border-cfte-pink/50 flex items-center justify-center bg-cfte-pink/10 backdrop-blur-sm relative z-10 group-hover/btn:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(230,0,126,0.2)]">
+                                    <i id="vid-main-icon" class="ph-fill ph-play text-4xl text-cfte-pink ml-1"></i>
+                                </div>
+                                <!-- Spinning Ring -->
+                                <div class="absolute inset-[-4px] border border-cfte-pink/30 rounded-full border-t-transparent animate-spin duration-[3s]"></div>
+                            </div>
+                        </div>
+
+                        <!-- HUD Controls (Bottom) -->
+                        <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black via-black/80 to-transparent translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                            
+                            <!-- Progress Bar -->
+                            <div class="w-full h-1 bg-white/10 rounded-full mb-4 cursor-pointer relative group/bar hover:h-1.5 transition-all" onclick="os.seekVideo(event)">
+                                <div id="vid-progress" class="h-full bg-cfte-pink w-0 relative shadow-[0_0_10px_#E6007E] rounded-full">
+                                    <div class="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full scale-0 group-hover/bar:scale-100 shadow-lg transition-transform"></div>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-between items-center text-white">
+                                <div class="flex items-center gap-4">
+                                    <button onclick="os.toggleVideo()" class="hover:text-cfte-pink transition-colors"><i id="vid-btn-icon" class="ph-bold ph-play text-xl"></i></button>
+                                    <span id="vid-time" class="text-xs font-mono text-cfte-pink/80 tracking-wider">00:00 <span class="text-gray-600">/</span> 00:00</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                     <i class="ph-bold ph-speaker-high text-gray-400"></i>
+                                     <div class="w-16 h-1 bg-gray-700 rounded-full overflow-hidden">
+                                         <div class="w-3/4 h-full bg-white/50"></div>
+                                     </div>
+                                     <button class="ml-2 hover:text-white text-gray-400" onclick="document.getElementById('vid-player').requestFullscreen()"><i class="ph-bold ph-corners-out"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Decorative Futuristic Corners -->
+                        <div class="absolute top-4 left-4 w-16 h-16 border-t border-l border-cfte-pink/50 rounded-tl-lg pointer-events-none"></div>
+                        <div class="absolute top-4 right-4 w-16 h-16 border-t border-r border-cfte-pink/50 rounded-tr-lg pointer-events-none"></div>
+                        <div class="absolute bottom-4 left-4 w-16 h-16 border-b border-l border-cfte-pink/50 rounded-bl-lg pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <div class="absolute bottom-4 right-4 w-16 h-16 border-b border-r border-cfte-pink/50 rounded-br-lg pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        
+                        <!-- Tech Lines -->
+                        <div class="absolute top-1/2 left-4 h-12 w-px bg-gradient-to-b from-transparent via-cfte-pink/30 to-transparent pointer-events-none"></div>
+                        <div class="absolute top-1/2 right-4 h-12 w-px bg-gradient-to-b from-transparent via-cfte-pink/30 to-transparent pointer-events-none"></div>
+                    </div>
+                `
+            },
+            'warning': {
+                id: 'warning',
+                title: 'System Warning',
+                icon: 'ph-warning',
+                color: 'text-yellow-500',
+                width: 450,
+                height: 320,
+                content: `
+                    <div class="h-full bg-black flex flex-col items-center justify-center text-center p-8 border border-yellow-500/20 relative overflow-hidden">
+                         <div class="absolute -top-10 -right-10 w-32 h-32 bg-yellow-500/10 rounded-full blur-3xl"></div>
+                         
+                        <div class="w-16 h-16 rounded-full bg-yellow-500/10 flex items-center justify-center mb-6 animate-pulse border border-yellow-500/30">
+                            <i class="ph-fill ph-warning text-4xl text-yellow-500"></i>
+                        </div>
+                        
+                        <h2 class="text-lg font-bold text-white mb-1 uppercase tracking-widest">Internal Demo App</h2>
+                        
+                        <div class="w-12 h-1 bg-yellow-500/50 rounded-full mb-6"></div>
+
+                        <div class="space-y-3 text-sm">
+                            <p class="text-red-400 font-semibold bg-red-900/10 py-2 px-4 rounded border border-red-500/20">
+                                <i class="ph-bold ph-prohibit"></i> NOT SUITABLE FOR PUBLIC DEMONSTRATION
+                            </p>
+                            <p class="text-gray-400">Please contact <strong class="text-white">Chau</strong> to learn more.</p>
+                        </div>
+
+                        <div class="mt-8 text-xs font-mono text-gray-600 border-t border-white/5 pt-4 w-full">
+                            DEC 2025 • SYSTEM BUILD 1.0
+                        </div>
                     </div>
                 `
             },
@@ -516,7 +621,7 @@
             }
 
             startDrag(e, winId) {
-                if (e.target.closest('button')) return;
+                if (e.target.closest('button') || e.target.closest('.cursor-pointer')) return; // Allow interaction with video controls
 
                 this.isDragging = true;
                 this.currentDragWindow = document.getElementById(winId);
@@ -526,6 +631,67 @@
                 this.dragOffset.y = e.clientY - rect.top;
                 
                 this.currentDragWindow.classList.add('opacity-90');
+            }
+
+            // --- VIDEO PLAYER LOGIC ---
+            toggleVideo() {
+                const video = document.getElementById('vid-player');
+                const overlay = document.getElementById('vid-overlay');
+                const mainIcon = document.getElementById('vid-main-icon');
+                const btnIcon = document.getElementById('vid-btn-icon');
+                
+                if (!video) return;
+
+                if (video.paused) {
+                    video.play();
+                    overlay.classList.add('opacity-0', 'pointer-events-none');
+                    mainIcon.classList.replace('ph-play', 'ph-pause');
+                    btnIcon.classList.replace('ph-play', 'ph-pause');
+                } else {
+                    video.pause();
+                    overlay.classList.remove('opacity-0', 'pointer-events-none');
+                    mainIcon.classList.replace('ph-pause', 'ph-play');
+                    btnIcon.classList.replace('ph-pause', 'ph-play');
+                }
+            }
+
+            updateVideoProgress() {
+                const video = document.getElementById('vid-player');
+                if (!video) return;
+
+                const percent = (video.currentTime / video.duration) * 100;
+                document.getElementById('vid-progress').style.width = `${percent}%`;
+
+                // Format Time
+                const format = (s) => {
+                    const m = Math.floor(s / 60);
+                    const sec = Math.floor(s % 60);
+                    return `${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+                };
+                
+                document.getElementById('vid-time').innerHTML = 
+                    `${format(video.currentTime)} <span class="text-gray-600">/</span> ${format(video.duration || 0)}`;
+            }
+
+            seekVideo(e) {
+                const video = document.getElementById('vid-player');
+                const bar = e.currentTarget;
+                if (!video || !bar) return;
+
+                const rect = bar.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                video.currentTime = pos * video.duration;
+            }
+
+            resetVideoState() {
+                const overlay = document.getElementById('vid-overlay');
+                const mainIcon = document.getElementById('vid-main-icon');
+                const btnIcon = document.getElementById('vid-btn-icon');
+                
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                mainIcon.classList.replace('ph-pause', 'ph-play');
+                btnIcon.classList.replace('ph-pause', 'ph-play');
+                document.getElementById('vid-progress').style.width = '0%';
             }
 
             handleTerminal(e) {
@@ -575,8 +741,12 @@
         // Initialize OS
         const os = new OperatingSystem();
         
-        // Open welcome app
-        setTimeout(() => os.openApp('future'), 500);
+        // Open welcome app & warning app
+        setTimeout(() => {
+            os.openApp('future');
+            // Slight delay for warning to appear on top
+            setTimeout(() => os.openApp('warning'), 200);
+        }, 500);
 
     </script>
 </body>
