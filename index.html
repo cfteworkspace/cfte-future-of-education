@@ -198,6 +198,11 @@
                 <i class="ph-duotone ph-warning text-2xl text-yellow-500 mb-1 group-hover:text-yellow-400"></i>
                 <span class="text-[10px] text-gray-400 group-hover:text-white">Notice</span>
             </button>
+            <!-- Added AI Diagnostics Button (NEW) -->
+            <button class="flex flex-col items-center justify-center p-2 hover:bg-white/5 rounded transition-colors group" onclick="os.openApp('ai-diagnostics')">
+                <i class="ph-duotone ph-brain text-2xl text-indigo-400 mb-1 group-hover:text-indigo-300"></i>
+                <span class="text-[10px] text-gray-400 group-hover:text-white">AI Diag</span>
+            </button>
         </div>
         <button class="w-full py-2 flex items-center gap-2 hover:bg-red-900/20 hover:text-red-400 rounded px-2 transition-colors text-sm text-gray-500">
             <i class="ph-bold ph-power"></i> Shut Down
@@ -425,6 +430,19 @@
                         <div class="flex gap-4">
                             <button class="bg-cfte-pink hover:bg-pink-700 px-4 py-2 rounded text-sm transition-colors text-white" onclick="window.open('https://courses.cfte.education', '_blank')">Visit Website</button>
                         </div>
+                    </div>
+                `
+            },
+            'ai-diagnostics': { // NEW APP
+                id: 'ai-diagnostics',
+                title: 'AI Diagnostics',
+                icon: 'ph-brain',
+                color: 'text-indigo-400',
+                width: 1100,
+                height: 750,
+                content: `
+                    <div class="flex flex-col h-full bg-black">
+                        <iframe src="https://diag.cfte.education/" class="w-full h-full border-0" allowfullscreen></iframe>
                     </div>
                 `
             }
